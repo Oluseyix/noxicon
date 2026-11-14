@@ -6,3 +6,16 @@
 @media(prefers-reduced-motion:reduce){.lab-page *{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 
 .lab-copy-feedback{display:block;font-size:14px;color:#ddd;max-width:28ch}
+
+/* Clarity pass: framing, run details, hints */
+.lab-claim{margin:16px 0 8px;padding:12px 16px;border-left:3px solid #6ea8fe;background:#14181d;font-size:16px;line-height:1.5;max-width:60ch}
+.lab-claim strong{color:#8ab8ff}
+.lab-run{margin:16px 0 24px;padding:16px;border:1px solid #2a2d31;border-radius:8px}
+.lab-badge{display:inline-block;margin-bottom:12px;padding:3px 8px;border:1px solid #2f4a73;border-radius:4px;background:#0f1a2b;color:#8ab8ff;font-size:12px;letter-spacing:.06em;text-transform:uppercase}
+.lab-run dl{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:12px 20px;margin:0}
+.lab-run dt{font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:#aaa}
+.lab-run dd{margin:4px 0 0;font-size:15px;overflow-wrap:anywhere}
+.lab-how{margin:20px 0 0;padding:12px 14px;border:1px solid #2a2d31;border-radius:8px;font-size:14px;line-height:1.5;color:#ddd}
+.lab-edit-buttons>div{display:flex;flex:1;flex-direction:column;gap:8px}
+.lab-edit-buttons>div>small{font-size:14px;line-height:1.4;color:#c4c4c4}
+.lab-edit-buttons>div>small code{font-size:13px}
