@@ -22,7 +22,6 @@ function workingCopy(edit:Edit){
  }
  return copy;
 }
-const shortDigest=(value:string)=>value?`${value.slice(0,12)}…${value.slice(-10)}`:'Calculating…';
 function CopyValue({value,label}:{value:string;label:string}){
  const [feedback,setFeedback]=useState('');
  async function copy(){try{await navigator.clipboard.writeText(value);setFeedback('Copied');}catch{setFeedback('Copy unavailable. Select the full value in Technical evidence.');}}
@@ -42,10 +41,32 @@ function RequestReplay(){
  }
  const first=measured.ttftMs/measured.latencyMs*100;
  const phase=position>=measured.latencyMs?'Recorded completion':position>=measured.ttftMs?'Receiving content until completion':'Waiting for first content';
- return <section className="lab-replay" aria-labelledby="replay-title"><div className="lab-section-head"><h2 id="replay-title">Request Replay</h2><button className="lab-text-button" onClick={replay}>{playing?'Restart replay':'Replay request'}</button></div>
- <p>One historical request. Playback stretched to 2 seconds.</p>
- <div className="lab-playback" aria-label="Historical request timeline"><div className="lab-track"><span className="lab-wait" style={{width:`${first}%`}}/><span className="lab-receive"/><span className="lab-arrival" style={{left:`${first}%`}}/><span className="lab-playhead" style={{left:`${position/measured.latencyMs*100}%`}}/></div><input aria-label="Historical replay position in milliseconds" type="range" min={0} max={measured.latencyMs} step="0.001" value={position} onChange={e=>{stop();setPosition(Number(e.target.value));}}/><div className="lab-timestamps"><button onClick={()=>{stop();setPosition(0);}} title="Request dispatched: 0 ms">0 ms</button><button onClick={()=>{stop();setPosition(measured.ttftMs);}} title={`${measured.ttftMs} ms — first visible content`}>235.6 ms</button><button onClick={()=>{stop();setPosition(measured.latencyMs);}} title={`${measured.latencyMs} ms — completed`}>356.1 ms</button></div></div>
- <div className="lab-replay-readout"><strong>{position.toFixed(1)} <span>ms</span></strong><span>{phase}</span></div><p className="lab-replay-note">Recorded timing visualization—not a live request or token trace. Drag the playhead or select a timestamp. Reduced motion shows the completed state.</p></section>;
+ return <section className="lab-replay" aria-labelledby="replay-title">
+  <div className="lab-section-head">
+    <h2 id="replay-title">Request Replay</h2>
+    <button className="lab-text-button" onClick={replay}>{playing?'Restart replay':'Replay request'}</button>
+  </div>
+  <p className="lab-replay-lead">Replay or scrub the recorded timing.</p>
+  <div className="lab-playback" aria-label="Historical request timeline">
+    <div className="lab-track">
+      <span className="lab-wait" style={{width:`${first}%`}}/>
+      <span className="lab-receive"/>
+      <span className="lab-arrival" style={{left:`${first}%`}}/>
+      <span className="lab-playhead" style={{left:`${position/measured.latencyMs*100}%`}}/>
+    </div>
+    <input aria-label="Historical replay position in milliseconds" type="range" min={0} max={measured.latencyMs} step="0.001" value={position} onChange={e=>{stop();setPosition(Number(e.target.value));}}/>
+    <div className="lab-timestamps">
+      <button onClick={()=>{stop();setPosition(0);}} title="Request dispatched: 0 ms">0 ms</button>
+      <button onClick={()=>{stop();setPosition(measured.ttftMs);}} title={`${measured.ttftMs} ms — first visible content`}>235.6 ms</button>
+      <button onClick={()=>{stop();setPosition(measured.latencyMs);}} title={`${measured.latencyMs} ms — completed`}>356.1 ms</button>
+    </div>
+  </div>
+  <div className="lab-replay-readout">
+    <strong>{position.toFixed(1)} <span>ms</span></strong>
+    <span>{phase}</span>
+  </div>
+  <p className="lab-replay-note">Historical timing · Replay slowed to 2 seconds</p>
+ </section>;
 }
 export default function ProofDemo(){
  const [edit,setEdit]=useState<Edit>('original');
@@ -66,7 +87,6 @@ export default function ProofDemo(){
   let rpcUnavailable=false;abort.current=new AbortController();
   const timer=setTimeout(()=>abort.current?.abort(),45000);
   try{
-   // This action always checks the genuine original, never the disposable edit.
    const calculated=await publicationPreview(validateReport(structuredClone(original)));
    if(calculated!==receipt.commitment)throw new Error('Original report does not match its receipt. No RPC verification was attempted.');
    abort.current.signal.throwIfAborted();setStage('lookup');
@@ -84,21 +104,70 @@ export default function ProofDemo(){
  const verified=check?.result.verified&&check.result.status==='verified'&&check.result.code==='commitment_verified';
  const localMatch=!!digest&&digest===receipt.commitment;
  const status=busy?'Checking':unavailable||check?.result.status==='unavailable'?'Network unavailable':verified?'Verified':check?.result.status==='pending'?'Pending':error||check?'Verification failed':'Not checked';
- return <div className="lab-page"><a className="lab-skip" href="#main">Skip to content</a><header className="lab-nav"><Link href="/" aria-label="Noxicon home" className="lab-brand">noxicon.</Link><nav aria-label="Main navigation"><span aria-current="page">Proof Explorer</span><Link href="/app">Run Benchmark</Link><Link href="/">Back to Home</Link></nav></header>
- <main id="main" tabIndex={-1} className="lab-main"><div className="lab-heading"><div><p className="lab-eyebrow">A REAL RECORD. AN INDEPENDENT CHECK.</p><h1>Evidence Laboratory</h1><p>Inspect the evidence. Verify the record. Change the claim.</p></div><span className="lab-network">NEAR Testnet</span></div>
- <div className="lab-workspace">
-  <section className="lab-summary" aria-labelledby="summary-title"><div className="lab-section-head"><h2 id="summary-title">The recorded run</h2><span className="lab-caption">Original evidence</span></div><div className="lab-metrics"><div><strong>{measured.latencyMs.toFixed(1)}<small>ms</small></strong><span>Total observed latency</span></div><div><strong>{measured.ttftMs.toFixed(1)}<small>ms</small></strong><span>First visible content</span></div><div><strong>1</strong><span>Measured request</span></div></div><p className="lab-output"><strong>Output limit reached.</strong> 32 reported tokens. This is a historical smoke test, not a performance comparison.</p></section>
-  <section className={`lab-verification ${verified?'is-verified':''}`} aria-labelledby="verification-title"><div className="lab-section-head"><span className="lab-eyebrow">PUBLIC RECORD CHECK</span><span className="lab-status">{status}</span></div><div className="lab-verdict" role="status" aria-live="polite"><div className={`lab-seal ${busy?'is-pending':''}`} aria-hidden="true">{busy?'…':verified?'✓':error||check&&!verified?'!':'?'}</div><h2 id="verification-title">{busy?'Checking publication…':verified?'Evidence verified':status==='Network unavailable'?'Verification unavailable':status==='Pending'?'Publication not finalized':error||check?'Verification failed':'Ready to verify'}</h2><p role={error?'alert':undefined}>{busy?(stage==='hashing'?'Computing the original report commitment.':'Looking up the finalized NEAR transaction.'):verified?'The original report matches its finalized public record.':error||check?.result.message||'Check this report against its public NEAR record.'}</p></div>
-  <button className="lab-primary" disabled={busy} onClick={()=>void verify()}>{busy?'Checking NEAR…':'Verify on NEAR'}</button><div className="lab-attribution"><span>Expected publisher</span><strong>{receipt.publisher}</strong><a href={receipt.explorerUrl} target="_blank" rel="noreferrer">View transaction</a></div>
-  <div className={`lab-comparison ${changed?'is-modified':''}`} aria-live="polite"><div className="lab-digest"><span>Published commitment <small>Historical receipt</small></span><div><code title={receipt.commitment}>{shortDigest(receipt.commitment)}</code><CopyValue value={receipt.commitment} label="published commitment"/></div></div><div className="lab-match"><span aria-hidden="true">{localMatch?'=':'≠'}</span><strong>{hashError?'UNAVAILABLE':!digest?'CALCULATING':localMatch?'MATCH':'MISMATCH'}</strong><span>Local comparison</span></div><div className="lab-digest"><span>Current report commitment <small>{changed?'Modified copy':'Original report'}</small></span><div><code title={digest}>{shortDigest(digest)}</code><CopyValue key={digest} value={digest} label="current report commitment"/></div></div></div>
-  <p className="lab-local-state" role="status">{hashError||(!digest?'Calculating locally…':changed?'Evidence modified. This copy no longer matches the published commitment.':'Local digest matches receipt')}</p><p className="lab-boundary">{changed?'The original’s NEAR result above is preserved. ':''}A local match is not on-chain verification. Integrity does not prove measurement truth, model execution or GPU/TEE attestation.</p>{check&&<p className="lab-checked">Original checked {new Date(check.checkedAt).toISOString()} · archival Testnet RPC</p>}</section>
-  <section className={`lab-editor ${changed?'is-modified':''}`} aria-labelledby="editor-title"><div className="lab-section-head"><h2 id="editor-title">Challenge the evidence</h2>{changed&&<button className="lab-text-button" onClick={()=>selectEdit('original')}>Restore original</button>}</div><p>Change a disposable copy. See what stops matching.</p><div className="lab-edit-buttons" role="group" aria-label="Evidence experiment"><button aria-pressed={edit==='model'} onClick={()=>selectEdit('model')}>Change model</button><button aria-pressed={edit==='timing'} onClick={()=>selectEdit('timing')}>Add 10 ms latency</button></div>
-  <div className="lab-change" role="status" aria-live="polite">{changed?<><span className="lab-change-label">{edit==='model'?'Model identifier changed':'Total latency changed'}</span><div className="lab-change-values"><div><span>Original</span><del>{edit==='model'?original.config.model:`${measured.latencyMs.toFixed(3)} ms`}</del></div><div><span>Modified copy</span><ins>{edit==='model'?'modified/model':`${(measured.latencyMs+10).toFixed(3)} ms`}</ins></div></div><p>{edit==='timing'?'Added 10 ms. Throughput and summary statistics are reconciled in the copy.':'The model name changed; the recorded measurements did not.'} No RPC request or inference was triggered.</p></>:<><span className="lab-change-label">Original evidence is intact</span><p>Your edits stay in this browser. The original report, receipt and published record never change.</p></>}</div></section>
-  <RequestReplay/>
- </div>
- <details className="lab-technical"><summary>Technical evidence<span>Report, publication & reproduction</span></summary><div className="lab-technical-groups">
- <details><summary>Report</summary><dl><div><dt>Actual provider / model</dt><dd>Groq · {original.config.model}</dd></div><div><dt>Run ID</dt><dd>{original.runId}</dd></div><div><dt>Exact original timing</dt><dd>Total: {measured.latencyMs} ms<br/>First content: {measured.ttftMs} ms</dd></div><div><dt>Changed field</dt><dd>{edit==='model'?'/config/model':edit==='timing'?'/requests/0/latencyMs; derived throughput and statistics':'None'}</dd></div></dl><button onClick={()=>download(original,'noxicon-historical-report.json')}>Download genuine report</button><p>One request, output limit reached. A smoke test only, with self-recorded observations—not independent proof of inference execution.</p></details>
- <details><summary>Publication</summary><dl><div><dt>Network / publisher</dt><dd>NEAR Testnet · {receipt.publisher}</dd></div><div><dt>Transaction</dt><dd><a href={receipt.explorerUrl} target="_blank" rel="noreferrer">{receipt.transactionHash}</a></dd></div><div><dt>Published commitment</dt><dd><code>{receipt.commitment}</code><CopyValue value={receipt.commitment} label="full published commitment"/></dd></div><div><dt>Current commitment</dt><dd><code>{digest}</code><CopyValue key={digest} value={digest} label="full current commitment"/></dd></div><div><dt>Actual RPC result</dt><dd>{check?`${check.result.code}: ${check.result.message}`:'Not checked in this session.'}</dd></div></dl><button onClick={()=>download(receipt,'noxicon-historical-receipt.json')}>Download matching receipt</button><p>Verification trusts archival-rpc.testnet.near.org. This is not a light-client inclusion proof. Testnet can reset or become unavailable. Verification always checks the original historical report, never an edited copy.</p></details>
- <details><summary>Reproduce</summary><p>From a clone of this project, install dependencies, then run the independent check. Follow the root README for the supported Node version and setup.</p><pre>npm ci{'\n'}npm run verify:demo</pre><CopyValue value={'npm ci\nnpm run verify:demo'} label="verification commands"/><p>Compare exported evidence offline:</p><pre>npm run proof:compare -- BEFORE.json AFTER.json</pre><CopyValue value="npm run proof:compare -- BEFORE.json AFTER.json" label="comparison command"/><p>No credentials required for this historical check. Own-report publication remains an explicitly authorized operator workflow. This page never signs or broadcasts.</p></details>
- </div></details></main></div>;
+ return <div className="lab-page"><a className="lab-skip" href="#main">Skip to content</a><header className="lab-nav"><Link href="/" aria-label="Noxicon home" className="lab-brand">noxicon.</Link></header>
+ <main id="main" tabIndex={-1} className="lab-main">
+  <div className="lab-heading">
+    <div>
+      <p className="lab-eyebrow">EVIDENCE DASHBOARD</p>
+      <h1>Evidence Laboratory</h1>
+      <p className="lab-lead">Verify a recorded run. See what changes when evidence changes.</p>
+
+    </div>
+    <span className="lab-network">NEAR Testnet</span>
+  </div>
+  <div className="lab-workspace">
+   <section className="lab-summary" aria-labelledby="summary-title">
+     <div className="lab-section-head">
+       <h2 id="summary-title">The recorded run</h2>
+       <span className="lab-claim-spec">Groq · Historical run</span>
+     </div>
+     <div className="lab-metrics">
+       <div><strong>{measured.latencyMs.toFixed(1)}<small>ms</small></strong><span>Total observed latency</span></div>
+       <div><strong>{measured.ttftMs.toFixed(1)}<small>ms</small></strong><span>First visible content</span></div>
+       <div><strong>1</strong><span>Measured request</span></div>
+     </div>
+     <p className="lab-output">32 reported tokens · Output limit reached</p>
+   </section>
+   <section className={`lab-verification ${verified?'is-verified':''}`} aria-labelledby="verification-title">
+     <div className="lab-section-head">
+       <span className="lab-eyebrow">PUBLIC RECORD CHECK</span>
+       <span className="lab-status">{status}</span>
+     </div>
+     <div className="lab-verdict" role="status" aria-live="polite">
+       <div className={`lab-seal ${busy?'is-pending':''}`} aria-hidden="true">{busy?'…':verified?'✓':error||check&&!verified?'!':'?'}</div>
+       <h2 id="verification-title">{busy?'Checking publication…':verified?'Evidence verified':status==='Network unavailable'?'Verification unavailable':status==='Pending'?'Publication not finalized':error||check?'Verification failed':'Ready to verify'}</h2>
+       <p role={error?'alert':undefined}>{busy?(stage==='hashing'?'Computing the original report commitment.':'Looking up the finalized NEAR transaction.'):verified?'The original report matches its finalized public record.':error||check?.result.message||'Check this report against its public NEAR record.'}</p>
+     </div>
+     <button className="lab-primary" disabled={busy} onClick={()=>void verify()}>{busy?'Checking NEAR…':'Verify on NEAR'}</button>
+     {check&&<p className="lab-checked">Original checked {new Date(check.checkedAt).toISOString()} · archival Testnet RPC</p>}
+   </section>
+   <section className={`lab-editor ${changed?'is-modified':''}`} aria-labelledby="editor-title">
+     <div className="lab-section-head">
+       <h2 id="editor-title">Challenge the evidence</h2>
+       {changed&&<button className="lab-text-button" onClick={()=>selectEdit('original')}>Restore original</button>}
+     </div>
+     <p>Edit a copy to see whether it still matches the published fingerprint.</p>
+     <div className="lab-edit-buttons" role="group" aria-label="Evidence experiment">
+       <button aria-pressed={edit==='model'} onClick={()=>selectEdit('model')}>Change model</button>
+       <button aria-pressed={edit==='timing'} onClick={()=>selectEdit('timing')}>Add 10 ms latency</button>
+     </div>
+     <div className="lab-change" role="status" aria-live="polite">
+       {changed?<><span className="lab-change-label">{edit==='model'?'Model identifier changed':'Total latency changed'}</span>
+       <div className="lab-change-values">
+         <div><span>Original</span><del>{edit==='model'?original.config.model:`${measured.latencyMs.toFixed(3)} ms`}</del></div>
+         <div><span>Modified copy</span><ins>{edit==='model'?'modified/model':`${(measured.latencyMs+10).toFixed(3)} ms`}</ins></div>
+       </div>
+       <p>The original record stays unchanged.</p></>
+       :<><span className="lab-change-label">Original evidence is intact</span>
+       <div className="lab-change-values"><div><span>Original latency</span><strong>{measured.latencyMs.toFixed(1)} ms</strong></div><div><span>Your copy</span><strong>{measured.latencyMs.toFixed(1)} ms</strong></div></div></>}
+     </div>
+     <div className={`lab-experiment-status ${changed?'is-changed':''}`} role="status">{hashError||(!digest?'Calculating fingerprint…':localMatch?'✓ Copy unchanged':'≠ Fingerprint mismatch')}<span>Local comparison · Original NEAR result preserved</span></div>
+   </section>
+   <RequestReplay/>
+  </div>
+  <details className="lab-technical"><summary>Technical evidence<span>Report, publication & reproduction</span></summary><div className="lab-technical-groups">
+  <details><summary>Report</summary><dl><div><dt>Actual provider / model</dt><dd>Groq · {original.config.model}</dd></div><div><dt>Run ID</dt><dd>{original.runId}</dd></div><div><dt>Exact original timing</dt><dd>Total: {measured.latencyMs} ms<br/>First content: {measured.ttftMs} ms</dd></div><div><dt>Changed field</dt><dd>{edit==='model'?'/config/model':edit==='timing'?'/requests/0/latencyMs; derived throughput and statistics':'None'}</dd></div></dl><button onClick={()=>download(original,'noxicon-historical-report.json')}>Download genuine report</button><p>One request, output limit reached. A smoke test only, with self-recorded observations—not independent proof of inference execution.</p></details>
+  <details><summary>Publication</summary><dl><div><dt>Network / publisher</dt><dd>NEAR Testnet · {receipt.publisher}</dd></div><div><dt>Transaction</dt><dd><a href={receipt.explorerUrl} target="_blank" rel="noreferrer">{receipt.transactionHash}</a></dd></div><div><dt>Published commitment</dt><dd><code>{receipt.commitment}</code><CopyValue value={receipt.commitment} label="full published commitment"/></dd></div><div><dt>Current commitment</dt><dd><code>{digest}</code><CopyValue key={digest} value={digest} label="full current commitment"/></dd></div><div><dt>Actual RPC result</dt><dd>{check?`${check.result.code}: ${check.result.message}`:'Not checked in this session.'}</dd></div></dl><button onClick={()=>download(receipt,'noxicon-historical-receipt.json')}>Download matching receipt</button><p>Verification trusts archival-rpc.testnet.near.org. This is not a light-client inclusion proof. Testnet can reset or become unavailable. Verification always checks the original historical report, never an edited copy.</p></details>
+  <details><summary>Reproduce</summary><p>From a clone of this project, install dependencies, then run the independent check. Follow the root README for the supported Node version and setup.</p><pre>npm ci{'\n'}npm run verify:demo</pre><CopyValue value={'npm ci\nnpm run verify:demo'} label="verification commands"/><p>Compare exported evidence offline:</p><pre>npm run proof:compare -- BEFORE.json AFTER.json</pre><CopyValue value="npm run proof:compare -- BEFORE.json AFTER.json" label="comparison command"/><p>No credentials required for this historical check. Own-report publication remains an explicitly authorized operator workflow. This page never signs or broadcasts.</p></details>
+  </div></details></main></div>;
 }

@@ -16,3 +16,5 @@ describe('progress wire protocol',()=>{
  it('rejects wrong content types and reports HTTP failures',async()=>{await expect(readLiveEvents(new Response('html'),()=>{})).rejects.toThrow('invalid response');await expect(readLiveEvents(Response.json({error:{message:'Budget reached'}},{status:429}),()=>{})).rejects.toThrow('Budget reached');});
 });
 it('caps hourly attempts separately from output tokens',()=>{const reserve=createRunBudget();const lowToken={...config,measuredRequests:8,warmupRequests:2,maxOutputTokens:16};for(let i=0;i<4;i++)reserve(lowToken)();expect(()=>reserve(lowToken)).toThrow('budget');});
+
+it('keeps the 6000-token hourly ceiling when a manual retry reserves 512 tokens per request',()=>{const reserve=createRunBudget();const retry={...config,measuredRequests:3,warmupRequests:1,maxOutputTokens:512};reserve(retry)();reserve(retry)();expect(()=>reserve(retry)).toThrow('budget');});

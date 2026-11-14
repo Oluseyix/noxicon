@@ -3,13 +3,13 @@ import { ProofError } from './proof-format';
 import { TESTNET_RPCS } from './proof-config';
 
 export type ProofRpc={call:(method:string,params:object|unknown[])=>Promise<unknown>};
-export function createProofRpc(url:string,request:typeof fetch=fetch):ProofRpc{
+export function createProofRpc(url:string,request:typeof fetch=fetch,timeoutMs=20000):ProofRpc{
  if(!TESTNET_RPCS.some(allowed=>allowed===url))throw new ProofError('configuration','RPC must be an allowlisted Testnet endpoint.',503);
  return {async call(method,params){
-  const signal=AbortSignal.timeout(20000);
+  const signal=AbortSignal.timeout(timeoutMs);
   try{
    // One dispatch, including send_tx. No SDK retries, redirects, or failover.
-   const response=await request(url,{method:'POST',headers:{'Content-Type':'application/json'},
+   const response=await request(url,{method:'POST',headers:{'Content-Type':'application/json','User-Agent':'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36 VeyraProof/1.0'},
     body:JSON.stringify({jsonrpc:'2.0',id:'veyra-proof-v1',method,params}),signal,redirect:'error',cache:'no-store'});
    if(!response.ok){void response.body?.cancel().catch(()=>{});throw new Error('http');}
    if(!response.body)throw new Error('body');
@@ -23,7 +23,7 @@ export function createProofRpc(url:string,request:typeof fetch=fetch):ProofRpc{
    }finally{signal.removeEventListener('abort',abort);void reader.cancel().catch(()=>{});reader.releaseLock();}
    if(!data||typeof data!=='object'||!('result' in data)||'error' in data)throw new Error('rpc');
    return data.result;
-  }catch{throw new ProofError('rpc_unavailable','Testnet RPC did not return a usable response. Submission status may be unknown; do not resubmit blindly.',503);}
+  }catch{throw new ProofError('rpc_unavailable',method==='send_tx'?'Testnet RPC did not return a usable response. Submission status may be unknown; do not resubmit blindly.':'The Testnet archive is unavailable. Try verification again shortly.',503);}
  }};
 }
 export async function assertTestnet(rpc:ProofRpc){

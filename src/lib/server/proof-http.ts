@@ -6,6 +6,9 @@ import { ProofError } from './proof-format';
 let windowStart=Date.now(),requests=0;
 export function authorizeProofRequest(request:Request){
  assertBenchmarkOrigin(request);
+ const url=new URL(request.url);
+ if(!['localhost','127.0.0.1','[::1]'].includes(url.hostname))
+  throw new ProofError('origin','Proof publication is limited to local operator environments.',403);
  const token=process.env.VEYRA_PROOF_API_TOKEN;
  if(!token||!/^[a-f0-9]{64}$/.test(token))throw new ProofError('authentication_unconfigured','Configure a private 32-byte hex publication API token.',503);
  const authorization=request.headers.get('authorization')??'';

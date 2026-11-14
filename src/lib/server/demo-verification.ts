@@ -4,9 +4,21 @@ import receipt from '../../../evidence/near-testnet-receipt.json';
 import { verifyProof,type ProofVerification } from './proof-near';
 import { createProofRpc } from './proof-rpc';
 
+async function runVerificationWithFallback(): Promise<ProofVerification> {
+ try {
+  const fastnearRpc = createProofRpc('https://archival-rpc.testnet.fastnear.com',fetch,8000);
+  const result = await verifyProof(report, receipt, 'veyra-proof.testnet', fastnearRpc);
+  if (result.verified || ['mismatch', 'invalid', 'failed'].includes(result.status)) {
+   return result;
+  }
+ } catch {}
+ const nearOrgRpc = createProofRpc('https://archival-rpc.testnet.near.org',fetch,8000);
+ return verifyProof(report, receipt, 'veyra-proof.testnet', nearOrgRpc);
+}
+
 // Public, fixed historical demonstration only. No input report, URL, account,
 // environment configuration, key, journal or publication function is accepted.
-export function createDemoVerification(check:()=>Promise<ProofVerification>=()=>verifyProof(report,receipt,'veyra-proof.testnet',createProofRpc('https://archival-rpc.testnet.near.org')),now:()=>number=Date.now){
+export function createDemoVerification(check:()=>Promise<ProofVerification>=runVerificationWithFallback,now:()=>number=Date.now){
  let busy=false,start=now(),count=0;
  return async function POST(request:Request){
   const reply=(data:unknown,status=200)=>Response.json(data,{status,headers:{'Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}});

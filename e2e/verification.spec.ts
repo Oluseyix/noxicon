@@ -4,7 +4,13 @@ const original=JSON.parse(readFileSync('evidence/groq-report.json','utf8'));
 const viewports=[{width:375,height:812},{width:768,height:1024},{width:1280,height:800},{width:1440,height:900},{width:1920,height:1000},{width:390,height:844}];
 for(const viewport of viewports)test(`dedicated verification page at ${viewport.width}px`,async({page},info)=>{
  await page.setViewportSize(viewport);const api:string[]=[];page.on('request',r=>{if(r.url().includes('/api/'))api.push(r.url());});
- await page.goto('/verify');await expect(page.getByRole('heading',{level:1})).toHaveText('Evidence Laboratory');
+ await page.goto('/verify');await expect(page.locator('.lab-page')).toHaveCSS('font-family', /-apple-system/);await expect(page.getByRole('heading',{level:1})).toHaveText('Evidence Laboratory');
+ await expect(page.locator('.lab-metrics>div').last()).toContainText('Measured requestOriginal evidence');
+ await expect(page.locator('.lab-section-head').first()).not.toContainText('Original evidence');
+ const eyebrow=await page.locator('.lab-heading .lab-eyebrow').boundingBox(), title=await page.locator('.lab-heading h1').boundingBox(), subtitle=await page.locator('.lab-heading p:last-child').boundingBox();
+ expect(title!.y-(eyebrow!.y+eyebrow!.height)).toBeGreaterThanOrEqual(18);
+ expect(subtitle!.y-(title!.y+title!.height)).toBeGreaterThanOrEqual(20);
+ expect(await page.locator('.lab-boundary').evaluate(el=>parseFloat(getComputedStyle(el).fontSize))).toBeGreaterThanOrEqual(17);
  await expect(page.getByText('Local digest matches receipt',{exact:true})).toBeVisible();
  await expect(page.locator('.lab-status')).toContainText('Not checked');expect(api).toEqual([]);
  await expect(page.locator('canvas')).toHaveCount(0);
@@ -24,7 +30,7 @@ for(const viewport of viewports)test(`dedicated verification page at ${viewport.
  const download=page.waitForEvent('download');await page.getByRole('button',{name:'Download genuine report'}).click();expect((await download).suggestedFilename()).toBe('noxicon-historical-report.json');
  await page.locator('.lab-technical-groups>details>summary').filter({hasText:'Reproduce'}).click();
  await expect(page.getByText('npm ci\nnpm run verify:demo',{exact:true})).toBeVisible();
- await page.getByRole('link',{name:'Run Benchmark',exact:true}).click();await expect(page).toHaveURL(/\/app$/);
+ await expect(page.locator('.lab-nav nav')).toHaveCount(0);await page.getByRole('link',{name:'Noxicon home',exact:true}).click();await expect(page).toHaveURL(/\/$/);
 });
 test('keyboard and reduced-motion access preserve the proof workflow',async({page})=>{
  await page.emulateMedia({reducedMotion:'reduce'});await page.goto('/verify');await page.keyboard.press('Tab');await expect(page.getByRole('link',{name:'Skip to content'})).toBeFocused();

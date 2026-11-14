@@ -21,9 +21,9 @@ export function parseGroqCatalog(value:unknown):ComputeModel[]{
   const parsed=modelSchema.safeParse(entry);if(!parsed.success)continue;
   const m=parsed.data;
   if(m.active===false||m.context_window<512||!chatFamily.test(m.id)||/guard|safeguard|prompt-guard/i.test(m.id))continue;
-  // 256 is our workload ceiling, not an invented provider capacity. Groq may
+  // 512 is our workload ceiling, not an invented provider capacity. Groq may
   // omit its output limit; unsupported requests fail once, without a fallback.
-  const maxOutputTokens=Math.min(256,m.max_completion_tokens??256);
+  const maxOutputTokens=Math.min(512,m.max_completion_tokens??256);
   if(maxOutputTokens<16)continue;
   models.set(m.id,{id:m.id,name:m.id,maxOutputTokens});
  }

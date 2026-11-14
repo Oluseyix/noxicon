@@ -197,7 +197,7 @@ describe('Groq catalog and stream dialect',()=>{
    {...groqModel,id:'meta-llama/llama-guard-4-12b'},{...groqModel,id:'openai/gpt-oss-safeguard-20b'},
    {...groqModel,id:'qwen/qwen3-32b',active:false},{id:'llama-incomplete'},
    {...groqModel,id:'llama-too-small',max_completion_tokens:8}];
-  expect(parseGroqCatalog({data})).toEqual([{id:groqModel.id,name:groqModel.id,maxOutputTokens:256}]);
+  expect(parseGroqCatalog({data})).toEqual([{id:groqModel.id,name:groqModel.id,maxOutputTokens:512}]);
   expect(parseGroqCatalog({data:[]})).toEqual([]);expect(()=>parseGroqCatalog({models:data})).toThrow('invalid');
   expect(parseGroqCatalog({data:[{...groqModel,max_completion_tokens:64}]})[0]).toHaveProperty('maxOutputTokens',64);
   expect(parseGroqCatalog({data:[{...groqModel,max_completion_tokens:undefined}]})[0]).toHaveProperty('maxOutputTokens',256);

@@ -11,7 +11,7 @@ for(const width of [375,390,768,1280,1440,1920,2560])test(`complete experience a
  await page.goto('/');await expect(page.getByRole('heading',{level:1})).toContainText('AI claims.');await page.getByRole('link',{name:'Explore the proof'}).click();await expect(page).toHaveURL(/\/verify$/);
  await expect(page.getByText('Local digest matches receipt',{exact:true})).toBeVisible();
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);expect(api).toEqual([]);
- await page.getByRole('link',{name:'Run Benchmark',exact:true}).click();await expect(page).toHaveURL(/\/app$/);
+ await page.getByRole('link',{name:'Noxicon home',exact:true}).click();await expect(page).toHaveURL(/\/$/);await page.getByRole('link',{name:'Create a report',exact:true}).click();await expect(page).toHaveURL(/\/app$/);
  await expect(page.getByRole('heading',{level:1})).toContainText('Know what your AI');await expect(page.getByText('Verification status',{exact:true})).toHaveCount(0);
  await expect(page.getByRole('button',{name:'Start benchmark'})).toBeDisabled();await expect(page.getByLabel('Measured requests',{exact:true})).toBeHidden();
  await page.getByRole('button',{name:'Refresh models',exact:true}).click();await expect(page.getByRole('button',{name:'Refresh models',exact:true})).toBeEnabled();

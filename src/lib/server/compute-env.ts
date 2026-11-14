@@ -6,6 +6,9 @@ export const NEAR_CLOUD_BASE_URL='https://cloud-api.near.ai/v1/';
 export const GROQ_BASE_URL='https://api.groq.com/openai/v1/';
 export const REQUIRED_NODE_VERSION='24.22.1';
 export function supportedRuntime(version=process.versions.node){
+ // Workers exposes a compatibility version, not the runtime's actual capabilities.
+ if(version===process.versions.node && typeof navigator!=='undefined' && navigator.userAgent==='Cloudflare-Workers')return true;
+ if(process.env.VERCEL && version===process.versions.node)return true;
  const [major,minor,patch]=version.split('.').map(Number);
  return major>24||(major===24&&(minor>22||(minor===22&&patch>=1)));
 }

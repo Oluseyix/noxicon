@@ -69,27 +69,27 @@ describe('Compute workspace',()=>{
     report.statistics=statistics(report.requests);report.verification=verificationSummary(report.requests);
     const user=userEvent.setup();render(<Workspace/>);
     await user.upload(screen.getByLabelText('Import benchmark report'),jsonFile(JSON.stringify(report)));
-    expect(await screen.findByText('Not measured')).toBeTruthy();
+    if(stopped)expect(await screen.findByRole('heading',{name:'Benchmark stopped during warm-up'})).toBeTruthy();else expect(await screen.findByText('Not measured')).toBeTruthy();
     const summary=document.querySelector('.vn-success')?.textContent;
-    expect(summary).toContain('No measured requests were attempted. 3 skipped.');
-    expect(summary).not.toContain('0.0%');
-    expect(summary?.includes('The benchmark stopped during warm-up.')).toBe(stopped);
+    if(stopped){expect(summary).toBeUndefined();expect(screen.queryByRole('heading',{name:'Request timeline'})).toBeNull();expect(screen.queryByText('Verification status')).toBeNull();}
+    else expect(summary).toContain('No measured requests were attempted. 3 skipped.');
+    expect(document.body.textContent).not.toContain('0.0%');
     expect(document.querySelector('.vc-metrics')).toBeNull();
     if(!stopped)expect(screen.getByText('Performance statistics unavailable: no successful measured requests.')).toBeTruthy();
     if(stopped){
       expect(screen.getByRole('heading',{name:'Benchmark stopped during warm-up'})).toBeTruthy();
       expect(screen.getByText(/output limit before returning an answer/)).toBeTruthy();
-      await user.click(screen.getByRole('button',{name:'Review settings and retry'}));
+      await user.click(screen.getByRole('button',{name:'Adjust settings'}));
       expect((screen.getByLabelText('Output token limit') as HTMLSelectElement).value).toBe('96');
       expect(document.querySelector('.vl-advanced')?.hasAttribute('open')).toBe(true);
       expect(vi.mocked(fetch).mock.calls.every(call=>call[0]==='/api/benchmarks/models')).toBe(true);
     }
   });
   it.each([
-    ['empty_output','stop','failed','Output-budget exhaustion is not confirmed.'],
+    ['empty_output','stop','failed','The model finished without returning an answer.'],
     ['timeout',null,'timed_out','The warm-up request timed out.'],
-    ['network_error',null,'failed','transport or provider API failure'],
-    ['invalid_stream',null,'failed','malformed or incomplete'],
+    ['network_error',null,'failed','The provider could not complete the warm-up request.'],
+    ['invalid_stream',null,'failed','incomplete or unreadable response'],
   ] as const)('distinguishes warm-up outcome %s',async(errorCode,finishReason,status,message)=>{
     const report=uiFixture();report.schemaVersion=2;report.status='provider_error';report.config={...report.config,warmupRequests:1};
     const skipped=report.requests[2];
@@ -99,7 +99,7 @@ describe('Compute workspace',()=>{
     const user=userEvent.setup();render(<Workspace/>);
     await user.upload(screen.getByLabelText('Import benchmark report'),jsonFile(JSON.stringify(report)));
     await screen.findByRole('heading',{name:'Benchmark stopped during warm-up'});
-    expect(document.querySelector('.nr-warmup-failure')?.textContent).toContain(message);
+    expect(document.querySelector('.nf-failure')?.textContent).toContain(message);
   });
   it('still displays the original successful Groq report and rate',async()=>{
     const user=userEvent.setup();render(<Workspace/>);
@@ -110,12 +110,12 @@ describe('Compute workspace',()=>{
     expect(screen.queryByText('Not measured')).toBeNull();
   });
 
-  it('omits the verbose GPT-OSS warning without changing selected limits',async()=>{
+  it('uses a provider-capped reasoning budget and allows explicit overrides',async()=>{
     vi.mocked(fetch).mockImplementation(async()=>Response.json({provider:'groq',models:[{id:'openai/gpt-oss-120b',name:'GPT-OSS',maxOutputTokens:256}],message:'Ready.'}));
     const user=userEvent.setup();render(<Workspace/>);
     await screen.findByText('GPT-OSS');expect(screen.queryByText(/GPT-OSS may use the completion budget/)).toBeNull();
     await user.click(screen.getByText('Advanced settings'));
-    expect((screen.getByLabelText('Output token limit') as HTMLSelectElement).value).toBe('96');
+    expect((screen.getByLabelText('Output token limit') as HTMLSelectElement).value).toBe('256');
     await user.selectOptions(screen.getByLabelText('Output token limit'),'128');
     expect((screen.getByLabelText('Output token limit') as HTMLSelectElement).value).toBe('128');
     expect(vi.mocked(fetch).mock.calls.every(call=>call[0]==='/api/benchmarks/models')).toBe(true);

@@ -21,7 +21,7 @@ afterEach(()=>{vi.unstubAllEnvs();vi.unstubAllGlobals();});
 describe('Groq routes — no real network or inference',()=>{
  it('discovers real endpoint metadata and returns provider-aware status to existing controls',async()=>{
   const request=vi.fn<typeof fetch>().mockResolvedValue(Response.json({data:[model]}));vi.stubGlobal('fetch',request);
-  const response=await GET(get());expect(response.status).toBe(200);expect(await response.json()).toMatchObject({provider:'groq',available:true,models:[{id:model.id,maxOutputTokens:256}],message:expect.stringContaining('Groq')});
+  const response=await GET(get());expect(response.status).toBe(200);expect(await response.json()).toMatchObject({provider:'groq',available:true,models:[{id:model.id,maxOutputTokens:512}],message:expect.stringContaining('Groq')});
   expect(request).toHaveBeenCalledExactlyOnceWith('https://api.groq.com/openai/v1/models',expect.objectContaining({headers:{Authorization:'Bearer mock-groq-secret'}}));
  });
  it('pins the selected provider through inference and exports a valid committed report',async()=>{

@@ -4,7 +4,7 @@ import { baseDecode, baseEncode, KeyPair, KeyPairSigner } from 'near-api-js';
 import { accountSchema, ProofError } from './proof-format';
 import { keychainSigner, type ProofSigner } from './proof-keychain';
 
-export const TESTNET_RPCS=['https://test.rpc.fastnear.com','https://archival-rpc.testnet.near.org'] as const;
+export const TESTNET_RPCS=['https://test.rpc.fastnear.com','https://archival-rpc.testnet.fastnear.com','https://archival-rpc.testnet.near.org'] as const;
 export type ProofConfiguration={publisher:string;rpcUrl:string;verifyRpcUrl:string;stateDirectory:string};
 function endpoint(value:string|undefined,fallback:string){
  const url=value??fallback;

@@ -2,6 +2,7 @@ import { assertBenchmarkReadOrigin, BoundaryError } from '../../../../lib/server
 import { computeProvider } from '../../../../lib/server/compute-provider';
 import { ProviderError } from '../../../../lib/server/compute-provider-error';
 export const runtime='nodejs';
+export const maxDuration=60;
 export async function GET(request:Request){
  try{
   assertBenchmarkReadOrigin(request);const provider=computeProvider();const models=await provider.discoverModels(request.signal);

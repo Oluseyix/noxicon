@@ -6,6 +6,7 @@ import { computeProvider } from '../../../lib/server/compute-provider';
 import { reserveRun } from '../../../lib/server/compute-budget';
 import { runBenchmark } from '../../../lib/server/compute-runner';
 export const runtime='nodejs';
+export const maxDuration=60;
 export async function POST(request:Request){
  let release:(()=>void)|undefined;
  try{

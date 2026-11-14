@@ -16,7 +16,7 @@ export const configSchema=z.object({
   warmupRequests:z.number().int().min(0).max(2).default(1),
   measuredRequests:z.number().int().min(1).max(8).default(5),
   concurrency:z.number().int().min(1).max(2).default(1),
-  maxOutputTokens:z.number().int().min(16).max(256).default(96),
+  maxOutputTokens:z.number().int().min(16).max(512).default(96),
   requestTimeoutMs:z.number().int().min(1000).max(60000).default(30000),
 }).strict().refine(c=>c.warmupRequests+c.measuredRequests<=10,'At most ten inference attempts per run');
 export type BenchmarkConfig=z.infer<typeof configSchema>;

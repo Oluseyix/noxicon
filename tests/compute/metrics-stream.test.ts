@@ -11,7 +11,7 @@ describe('benchmark configuration and fixed workload',()=>{
     expect(requestBody(config,0).messages).toEqual(requestBody(config,3).messages);
     expect(configurationSnapshot(config)).toMatchObject({stream:true,choices:1,temperature:0,topP:1});
   });
-  it.each([{prompt:'secret'},{apiKey:'secret'},{baseUrl:'https://evil.test'},{verification:{verified:true}},{measuredRequests:9},{warmupRequests:3},{concurrency:3},{maxOutputTokens:257},{requestTimeoutMs:999},{measuredRequests:1.5},{model:'bad model'}])('rejects unsafe configuration %j',override=>expect(configSchema.safeParse({model:'test/model',...override}).success).toBe(false));
+  it.each([{prompt:'secret'},{apiKey:'secret'},{baseUrl:'https://evil.test'},{verification:{verified:true}},{measuredRequests:9},{warmupRequests:3},{concurrency:3},{maxOutputTokens:513},{requestTimeoutMs:999},{measuredRequests:1.5},{model:'bad model'}])('rejects unsafe configuration %j',override=>expect(configSchema.safeParse({model:'test/model',...override}).success).toBe(false));
 });
 describe('metric definitions',()=>{
   it('uses nearest-rank percentiles, including small samples and empty data',()=>{
