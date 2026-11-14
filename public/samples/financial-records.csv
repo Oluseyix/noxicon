@@ -1,0 +1,9 @@
+transaction_id,date,currency,amount,customer_id,sender,recipient,classification
+sep-001,2026-09-04,USD,12500.00,cust-a,wallet-a,treasury,customer_payment
+sep-002,2026-09-18,USD,8000.00,cust-b,wallet-b,treasury,customer_payment
+oct-001,2026-10-03,USD,250000.00,cust-a,wallet-a,treasury,customer_payment
+oct-002,2026-10-12,USD,170000.00,cust-b,wallet-b,treasury,customer_payment
+oct-003,2026-10-19,USD,180000.00,cust-c,wallet-c,treasury,customer_payment
+oct-004,2026-10-23,USD,100000.00,cust-d,wallet-d,treasury,customer_payment
+oct-005,2026-10-26,USD,200000.00,,treasury,reserve,internal
+oct-006,2026-10-29,USD,100000.00,,unknown,treasury,unclassified

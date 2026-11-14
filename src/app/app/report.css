@@ -1,0 +1,134 @@
+/* Report-only refinement. Metrics, evidence and disclosure behavior are unchanged. */
+.vn-app .vn-workspace.vn-results { max-width:1120px; width:90%; padding:32px 0 64px; font-size:15px; line-height:1.6; }
+.vn-app .vn-results { --nr-muted:#aaa; --nr-line:#303030; }
+.vn-app .vn-results-top { padding-bottom:20px; margin-bottom:24px; gap:16px; }
+.vn-app .vn-results .vn-link,.vn-app .vn-results .vn-button { font-size:14px; min-height:44px; }
+.vn-app .vn-results>h1 { font-size:clamp(32px,3.3vw,42px); line-height:1.15; letter-spacing:-.045em; margin:0 0 24px; }
+.vn-app .vn-results .vc-report-meta { border:0; padding:0; gap:24px; }
+.vn-app .vn-results .vc-report-meta h2 { font-size:28px; line-height:1.25; margin:6px 0 10px; letter-spacing:-.03em; overflow-wrap:anywhere; }
+.vn-app .vn-results .vc-report-meta>div { min-width:0; }
+.vn-app .vn-results .vc-kicker { font-size:12px; letter-spacing:.1em; color:var(--nr-muted); }
+.vn-app .vn-results .vc-report-meta p { font-family:inherit; line-height:1.6; font-size:13px; margin-top:6px; color:var(--nr-muted); }
+.vn-app .vn-results .nr-identity { display:flex; flex-wrap:wrap; gap:8px 20px; font-size:14px; }
+.vn-app .vn-results .nr-identity>span+span { color:var(--nr-muted); }
+.vn-app .vn-results .vc-source-badge { background:transparent; border:0; border-left:1px solid var(--nr-line); padding:0 0 0 16px; max-width:230px; font-size:13px; line-height:1.6; color:var(--nr-muted); }
+.vn-app .vn-results .vc-import-boundary,.vn-app .vn-results .vn-example-note { font-size:14px; line-height:1.65; margin:16px 0; max-width:90ch; color:var(--nr-muted); }
+.vn-app .vn-results .vn-success { display:grid; grid-template-columns:145px 110px minmax(0,1fr); gap:16px; align-items:center; margin:20px 0 0; padding:16px 0; background:transparent; border-radius:0; border-block:1px solid var(--nr-line); }
+.vn-app .vn-results .vn-success>span { font-size:14px; line-height:1.6; }
+.vn-app .vn-results .vn-success strong { font-size:26px; font-weight:500; letter-spacing:-.03em; font-variant-numeric:tabular-nums; }
+.vn-app .vn-results .vn-success>span:last-child { margin:0; max-width:none; width:auto; font-size:13px; color:var(--nr-muted); }
+.vn-app .vn-results .vc-metrics { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:0; padding:24px 0; margin:0; border:0; border-bottom:1px solid var(--nr-line); }
+.vn-app .vn-results .vc-metrics>div { padding:0 20px!important; border:0!important; border-right:1px solid var(--nr-line)!important; border-radius:0; background:transparent; box-shadow:none; animation:none; }
+.vn-app .vn-results .vc-metrics>div:first-child { padding-left:0!important; }
+.vn-app .vn-results .vc-metrics>div:last-child { padding-right:0!important; border:0!important; }
+.vn-app .vn-results .vc-metrics>div>span { font-size:14px; min-height:0; line-height:1.5; color:var(--nr-muted); }
+.vn-app .vn-results .vc-metrics strong { font-size:clamp(36px,3.2vw,44px); line-height:1.2; margin:12px 0 8px; font-variant-numeric:tabular-nums; }
+.vn-app .vn-results .vc-metrics strong small { font-size:13px; }
+.vn-app .vn-results .vc-metrics p { font-size:13px; min-height:0; margin:0; line-height:1.6; color:var(--nr-muted); }
+.vn-app .vn-results .vc-outcomes { border:0; padding:14px 0 0; font-size:14px; gap:8px 24px; font-variant-numeric:tabular-nums; }
+.vn-app .vn-results .vc-outcomes small { font-size:13px; }
+.vn-app .vn-results .vc-estimate { background:transparent; border-left:2px solid #737373; padding:0 0 0 14px; font-size:14px; margin:16px 0; }
+.vn-app .vn-results .vn-feedback { font-size:15px; border:0; border-left:2px solid #ddd; border-radius:0; padding:12px 16px; margin:16px 0; line-height:1.65; overflow-wrap:anywhere; }
+.vn-app .vn-results .vc-chart-heading { margin:28px 0 12px; gap:16px; }
+.vn-app .vn-results .vc-chart-heading .vc-kicker { margin:0 0 6px; }
+.vn-app .vn-results .vc-chart-heading h2 { font-size:24px; letter-spacing:-.025em; line-height:1.3; }
+.vn-app .vn-results .vc-segment { padding:0; border:0; border-bottom:1px solid var(--nr-line); }
+.vn-app .vn-results .vc-segment button { min-height:44px; padding:8px 12px; font-size:14px; background:transparent; border-bottom:2px solid transparent; }
+.vn-app .vn-results .vc-segment button[aria-pressed=true] { color:#f5f5f5; border-bottom-color:#f5f5f5; }
+.vn-app .vn-results .vc-plot-legend { margin:12px 0; gap:12px 20px; font-size:13px; flex-wrap:wrap; }
+.vn-app .vn-results .vc-plot-legend small { font-size:12px; }
+.vn-app .vn-results .vc-plot-legend i { border-radius:0; width:12px; height:6px; }
+.vn-app .vn-results .vc-plot-legend>span:nth-child(2) i { width:2px; height:12px; background:#f5f5f5; }
+.vn-app .vn-results .vn-request-chart { margin:0 0 20px; }
+.vn-app .vn-results .vn-chart-scale,.vn-app .vn-results .vn-chart-row { grid-template-columns:48px minmax(0,1fr) 100px; gap:16px; }
+.vn-app .vn-results .vn-chart-scale { font-size:13px; padding:12px 0; }
+.vn-app .vn-results .vn-chart-row { min-height:64px; padding:10px 0; }
+.vn-app .vn-results .vn-chart-row[aria-pressed=true] { background:#141414; outline:1px solid #737373; outline-offset:-1px; }
+.vn-app .vn-results .vn-chart-index { font-size:14px; font-variant-numeric:tabular-nums; }
+.vn-app .vn-results .vn-bar-lane { min-width:0; }
+.vn-app .vn-results .vn-chart-value { font-size:16px; font-variant-numeric:tabular-nums; }
+.vn-app .vn-results .vn-chart-value small { font-size:13px; }
+.vn-app .vn-results .vn-skipped { font-size:13px; }
+.vn-app .vn-results .vn-chart-selection { min-height:0; font-size:14px; line-height:1.65; margin:14px 0 24px; color:var(--nr-muted); }
+/* One disclosure rhythm, including nested evidence/request records. */
+.vn-app .vn-results details,.vn-app .vn-results details[open] { border:0!important; border-top:1px solid var(--nr-line)!important; border-radius:0; background:transparent; margin:0!important; padding:0!important; }
+.vn-app .vn-results details>summary { min-height:56px; font-size:15px!important; padding:16px 0!important; margin:0!important; background:transparent; border:0; border-radius:0; }
+.vn-app .vn-results details>summary:hover { color:#fff; background:transparent; }
+.vn-app .vn-results details>summary:after { font-size:20px; width:24px; height:24px; }
+.vn-app .vn-results details[open]>summary { margin:0 0 16px!important; border:0; }
+.vn-app .vn-results details[open] { padding-bottom:20px!important; }
+.vn-app .vn-results .vc-table-wrap { max-width:100%; margin:12px 0 20px; }
+.vn-app .vn-results .vc-table-wrap th,.vn-app .vn-results .vc-table-wrap td { font-size:14px; padding:12px; font-variant-numeric:tabular-nums; }
+.vn-app .vn-results .vc-table-wrap button { min-height:44px; min-width:44px; }
+.vn-app .vn-results .vc-table-hint { font-size:13px; color:var(--nr-muted); }
+.vn-app .vn-results .vc-detail p,.vn-app .vn-results .vc-detail li,.vn-app .vn-results dt,.vn-app .vn-results dd { font-size:15px; line-height:1.65; overflow-wrap:anywhere; }
+.vn-app .vn-results .vc-config-summary,.vn-app .vn-results .nr-methodology { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:0 32px; margin:0 0 20px; }
+.vn-app .vn-results .vc-config-summary>div,.vn-app .vn-results .nr-methodology>div { display:block; border:0; padding:12px 0; min-width:0; }
+.vn-app .vn-results .vc-config-summary>div:last-child { grid-column:1/-1; }
+.vn-app .vn-results .vc-config-summary dt,.vn-app .vn-results .nr-methodology dt { max-width:none; color:var(--nr-muted); font-size:13px; margin-bottom:4px; }
+.vn-app .vn-results .vc-config-summary dd,.vn-app .vn-results .nr-methodology dd { margin:0; text-align:left; font-variant-numeric:tabular-nums; }
+.vn-app .vn-results .vc-detail ol { padding-left:22px; max-width:85ch; }
+.vn-app .vn-results .vc-detail li { padding:6px 0; }
+.vn-app .vn-results .vn-verification-status { background:transparent; border:0; border-top:1px solid var(--nr-line); border-radius:0; padding:24px 0; margin:0; gap:12px 32px; }
+.vn-app .vn-results .vn-verification-status h2 { font-size:24px; margin-bottom:0; }
+.vn-app .vn-results .vn-verification-status p,.vn-app .vn-results .vn-verification-status strong { font-size:14px; line-height:1.65; }
+.vn-app .vn-results .vc-evidence-section { padding:0; }
+.vn-app .vn-results .vc-evidence-intro h2 { font-size:24px; }
+.vn-app .vn-results .vc-evidence-intro p,.vn-app .vn-results .vc-evidence-ledger article p,.vn-app .vn-results .vc-commitment-detail p,.vn-app .vn-results .vc-commitment-detail li { font-size:15px; line-height:1.65; max-width:85ch; overflow-wrap:anywhere; }
+.vn-app .vn-results .vc-ledger-title { flex-wrap:wrap; gap:8px 20px; }
+.vn-app .vn-results .vc-ledger-title h3 { font-size:20px; }
+.vn-app .vn-results .vc-ledger-title>span { font-size:13px; }
+.vn-app .vn-results .vc-evidence-ledger article { padding:24px 0; }
+.vn-app .vn-results .vc-claimed-evidence { background:transparent; border:0; padding:0; }
+.vn-app .vn-results .vc-hash code { font-size:13px; overflow-wrap:anywhere; }
+.vn-app .vn-results code { overflow-wrap:anywhere; }
+@media(max-width:900px) {
+ .vn-app .vn-results .vc-metrics { grid-template-columns:repeat(2,minmax(0,1fr)); gap:24px 0; }
+ .vn-app .vn-results .vc-metrics>div:nth-child(odd) { padding-left:0!important; }
+ .vn-app .vn-results .vc-metrics>div:nth-child(even) { border:0!important; padding-right:0!important; }
+ .vn-app .vn-results .vn-success { grid-template-columns:1fr auto; gap:8px 16px; }
+ .vn-app .vn-results .vn-success>span:last-child { grid-column:1/-1; }
+}
+@media(max-width:560px) {
+ .vn-app .vn-workspace.vn-results { width:90%; padding-top:20px; }
+ .vn-app .vn-results-top { align-items:flex-start; flex-direction:column; gap:8px; margin-bottom:20px; }
+ .vn-app .vn-results .vn-actions { width:100%; justify-content:space-between; }
+ .vn-app .vn-results .vc-report-meta { flex-direction:column; gap:12px; }
+ .vn-app .vn-results .vc-report-meta h2 { font-size:26px; }
+ .vn-app .vn-results .vc-source-badge { max-width:none; padding:0; border:0; }
+ .vn-app .vn-results .vc-metrics strong { font-size:36px; }
+ .vn-app .vn-results .vc-metrics>div { padding-inline:12px!important; }
+ .vn-app .vn-results .vc-chart-heading { align-items:flex-start; flex-direction:column; gap:12px; }
+ .vn-app .vn-results .vc-plot-legend small { display:none; }
+ .vn-app .vn-results .vn-chart-scale,.vn-app .vn-results .vn-chart-row { grid-template-columns:24px minmax(0,1fr) 80px; gap:10px; }
+ .vn-app .vn-results .vn-chart-scale>span:first-child:after,.vn-app .vn-results .vn-chart-scale>span:nth-child(2):after { font-size:13px; }
+ .vn-app .vn-results .vn-chart-value { font-size:15px; }
+ .vn-app .vn-results .vc-config-summary,.vn-app .vn-results .nr-methodology { grid-template-columns:1fr; }
+ .vn-app .vn-results .vc-evidence-ledger article { grid-template-columns:1fr; gap:8px; }
+ .vn-app .vn-results .vc-ledger-index { font-size:12px; }
+}
+
+.nr-warmup-failure{border-left:3px solid #ddd;padding:18px 22px;margin:20px 0;background:#151515}
+.nr-warmup-failure h3{font:650 22px/1.3 'Manrope Variable',sans-serif;letter-spacing:-.02em;margin:0 0 12px}
+.nr-warmup-failure p{font-size:15px;line-height:1.65;max-width:85ch;margin:10px 0;color:#ccc}
+.nr-warmup-failure .vn-button{margin:12px 0}
+
+/* Readable application type, including imported evidence disclosures. */
+.vn-app .vn-workspace{font-weight:500;font-size:16px;line-height:1.65}
+.vn-app .vn-results>h1{font-size:clamp(34px,3.6vw,44px);font-weight:750}
+.vn-app .vn-results .vc-report-meta h2{font-size:30px;font-weight:700}
+.vn-app .vn-results :is(p,dd,dt,label,summary,.vn-link,.vn-button){font-size:16px;line-height:1.65}
+.vn-app .vn-results :is(.vc-kicker,.vc-source-badge,.nr-identity,.vc-report-meta p,th,td){font-size:14px;font-weight:500}
+.vn-app .vn-results :is(h2,h3){font-weight:700}
+.vn-app .vn-results .vc-metrics strong{font-size:44px;font-weight:650}
+.vn-app .vn-results .nr-warmup-failure{padding:24px;margin:24px 0;background:#191919;border-left:3px solid #eee}
+.vn-app .vn-results .nr-warmup-failure h3{font-size:26px;font-weight:700}
+.vn-app .vn-results .nr-warmup-failure>p{font-size:18px;max-width:65ch}
+.vn-app .nr-diagnostics{margin-top:12px}.vn-app .nr-diagnostics p{color:#aaa;font-size:14px!important}
+.vn-app .nr-run-details>summary{padding:20px 0;font-weight:650;border-block:1px solid #333;margin-top:20px}
+.vn-app .nr-run-details[open]>summary{margin-bottom:20px}
+.vn-app .vx-launch :is(label,select,button,p){font-size:16px;font-weight:500}
+.vn-app .vx-launch h1,.vn-app .vx-launch h2{font-weight:700}
+.vl-recovery{margin-block:20px;padding:16px 0;border-block:1px solid #444}.vl-recovery button{margin-top:12px}
+
+.vn-app .vn-results .vn-success>span{font-size:16px;line-height:1.6}.vn-app .vn-results .vn-success strong{font-weight:650}

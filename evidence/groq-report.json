@@ -1,0 +1,101 @@
+{
+  "application": "veyra-compute",
+  "schemaVersion": 2,
+  "runId": "66a5cda1-ee54-4057-b9b5-3a2fb2ade78e",
+  "origin": "live",
+  "startedAt": "2026-11-12T23:32:47.802Z",
+  "completedAt": "2026-11-12T23:32:48.160Z",
+  "durationMs": 358.5127499999944,
+  "status": "completed",
+  "config": {
+    "model": "qwen/qwen3.8-27b",
+    "workload": "short-answer-v1",
+    "warmupRequests": 0,
+    "measuredRequests": 1,
+    "concurrency": 1,
+    "maxOutputTokens": 32,
+    "requestTimeoutMs": 30000,
+    "provider": "groq",
+    "system": "Answer the request directly in plain text. Do not use tools. Keep the answer under 50 words.",
+    "prompts": [
+      "Explain in two sentences why measuring network latency differs from measuring GPU execution time.",
+      "List three reasons repeated inference requests can have different latencies. Use one short sentence.",
+      "Explain in two sentences what a cryptographic commitment does and does not prove."
+    ],
+    "temperature": 0,
+    "topP": 1,
+    "stream": true,
+    "choices": 1,
+    "runTimeoutMs": 120000,
+    "verificationTimeoutMs": 10000
+  },
+  "requests": [
+    {
+      "index": 0,
+      "phase": "measured",
+      "promptIndex": 0,
+      "status": "success",
+      "latencyMs": 356.05295799998567,
+      "ttftMs": 235.5839580000029,
+      "verificationMs": null,
+      "completionId": "chatcmpl-b148ce04-7fad-4f81-8948-a8159c2d7ff8",
+      "finishReason": "length",
+      "outputTokens": 32,
+      "tokenSource": "reported",
+      "tokenScope": "provider_completion_including_reasoning",
+      "throughputTokensPerSecond": 89.87427089427885,
+      "outputBytes": 190,
+      "errorCode": null,
+      "verification": {
+        "status": "not_requested",
+        "modelTeeVerified": false,
+        "gpuTeeVerified": false,
+        "reason": "not_requested"
+      }
+    }
+  ],
+  "statistics": {
+    "planned": 1,
+    "attempted": 1,
+    "successful": 1,
+    "failed": 0,
+    "timedOut": 0,
+    "cancelled": 0,
+    "skipped": 0,
+    "latencyMs": {
+      "samples": 1,
+      "p50": 356.05295799998567,
+      "p95": 356.05295799998567,
+      "mean": 356.05295799998567
+    },
+    "ttftMs": {
+      "samples": 1,
+      "p50": 235.5839580000029,
+      "p95": 235.5839580000029,
+      "mean": 235.5839580000029
+    },
+    "throughput": {
+      "definition": "completion_tokens_per_total_request_second",
+      "reported": {
+        "samples": 1,
+        "p50": 89.87427089427885,
+        "p95": 89.87427089427885,
+        "mean": 89.87427089427885
+      },
+      "estimated": {
+        "samples": 0,
+        "p50": null,
+        "p95": null,
+        "mean": null
+      }
+    }
+  },
+  "verification": {
+    "providerTee": 0,
+    "gpuTee": 0,
+    "gateway": 0,
+    "failed": 0,
+    "unavailable": 0,
+    "notRequested": 1
+  }
+}

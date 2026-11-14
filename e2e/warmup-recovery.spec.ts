@@ -1,0 +1,42 @@
+import { test,expect } from '@playwright/test';
+import { uiFixture } from '../tests/compute/ui-fixture';
+import { statistics,verificationSummary } from '../src/lib/compute/metrics';
+import { mapVerification } from '../src/lib/compute/verification';
+
+for(const width of [375,768,1280,1440])test(`empty warm-up recovery is explicit and keeps limits at ${width}px`,async({page},info)=>{
+ await page.setViewportSize({width,height:900});
+ const model={id:'openai/gpt-oss-120b',name:'GPT-OSS 120B',maxOutputTokens:256};
+ // Mock the live endpoint contract; no real inference occurs in this test.
+ const report=uiFixture();report.schemaVersion=2;report.origin='live';report.status='provider_error';
+ report.config={...report.config,model:model.id,provider:'groq',warmupRequests:1,maxOutputTokens:96};
+ const skipped=report.requests[2];
+ report.requests=Array.from({length:4},(_,index)=>({...skipped,index,promptIndex:index%3,phase:index===0?'warmup' as const:'measured' as const,verification:mapVerification()}));
+ report.requests[0]={...report.requests[0],status:'failed',errorCode:'empty_output',latencyMs:100,completionId:'fixture-completion',finishReason:'length'};
+ report.statistics=statistics(report.requests);report.verification=verificationSummary(report.requests);
+ let requests=0;
+ await page.route('**/api/benchmarks/models',r=>r.fulfill({json:{provider:'groq',models:[model],message:'Fixture catalog.'}}));
+ await page.route('**/api/benchmarks',r=>{requests++;return r.fulfill({contentType:'application/x-ndjson',body:JSON.stringify({type:'report',report,warning:'Groq returned a completed stream without answer content. Finish reason: length. Provider completion tokens: 96; reasoning tokens: 96. No automatic retry was made.'})+'\n'});});
+ await page.goto('/app');await expect(page.getByRole('button',{name:'Start benchmark'})).toBeEnabled();
+ await page.getByRole('button',{name:'Start benchmark'}).click();
+ await expect(page.getByRole('heading',{name:'Benchmark stopped during warm-up'})).toBeVisible();
+ await expect(page.getByText('Not measured',{exact:true})).toBeVisible();
+ await expect(page.locator('.vc-metrics')).toHaveCount(0);
+ await page.screenshot({path:info.outputPath(`warmup-initial-${width}.png`),fullPage:true,animations:'disabled'});
+ await page.getByText('Provider diagnostics',{exact:true}).click();
+ await expect(page.locator('.nr-provider-warning')).toContainText('reasoning tokens: 96');
+ await expect(page.locator('.nr-warmup-failure')).toContainText('3 measured requests were not started');
+ await expect(page.locator('.nr-warmup-failure')).toContainText('96-token output limit');
+ await page.getByText('Request records and methodology',{exact:true}).click();
+ await expect(page.getByText('No timing was recorded for the selected request phase.')).toBeVisible();
+ await page.getByRole('button',{name:'Warm-ups',exact:true}).click();
+ await expect(page.getByRole('button',{name:'View timing for request 1'})).toContainText('100 ms');
+ await page.getByRole('button',{name:'Measured',exact:true}).click();
+ await page.screenshot({path:info.outputPath(`warmup-failure-${width}.png`),fullPage:true,animations:'disabled'});
+ await page.getByRole('button',{name:'Review settings and retry'}).click();
+ await expect(page.getByLabel('Output token limit',{exact:true})).toBeVisible();
+ await expect(page.getByLabel('Output token limit',{exact:true})).toHaveValue('96');
+ await page.getByRole('button',{name:'Use 256-token limit'}).click();
+ await expect(page.getByLabel('Output token limit',{exact:true})).toHaveValue('256');
+ expect(requests).toBe(1);
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+});
