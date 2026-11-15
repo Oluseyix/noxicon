@@ -1,0 +1,106 @@
+/* A shared grid keeps the timeline's headers, bars and exact values aligned. */
+.vn-app .vn-workspace.vn-results .vc-plot-legend {
+ gap:12px 24px;
+ margin:18px 0;
+ font-size:13px;
+ font-weight:400;
+ line-height:1.5;
+}
+.vn-app .vn-workspace.vn-results .vc-plot-legend small {
+ font-family:inherit;
+ font-size:12px;
+ font-weight:400;
+ letter-spacing:0;
+}
+.vn-app .vn-workspace.vn-results .vn-request-chart {
+ padding:8px 24px 20px;
+ border:1px solid #303030;
+ border-radius:12px;
+ background:#0b0b0b;
+ margin:0 0 28px;
+}
+.vn-app .vn-workspace.vn-results :is(.vn-chart-scale,.vn-chart-row) {
+ grid-template-columns:72px minmax(0,1fr) 112px;
+ gap:24px;
+}
+.vn-app .vn-workspace.vn-results .vn-chart-scale {
+ padding:16px 0;
+ font-size:13px;
+ font-weight:500;
+ line-height:1.5;
+ color:#a3a3a3;
+}
+.vn-app .vn-workspace.vn-results .vn-chart-scale>span:first-child { white-space:nowrap; }
+.vn-app .vn-workspace.vn-results .vn-chart-scale>span:last-child { white-space:nowrap; font-variant-numeric:tabular-nums; }
+.vn-app .vn-workspace.vn-results .vn-chart-row {
+ min-height:76px;
+ padding:16px 0;
+ border-bottom:1px solid #252525;
+ transition:background .15s;
+}
+.vn-app .vn-workspace.vn-results .vn-chart-row:hover { background:#151515; }
+.vn-app .vn-workspace.vn-results .vn-chart-row[aria-pressed=true] {
+ background:#202020;
+ outline:1px solid #777;
+ outline-offset:0;
+ border-radius:4px;
+}
+.vn-app .vn-workspace.vn-results .vn-chart-row:focus-visible { outline:2px solid #fff; outline-offset:2px; }
+.vn-app .vn-workspace.vn-results .vn-chart-index { font-size:14px; font-weight:500; color:#aaa; }
+.vn-app .vn-workspace.vn-results .vn-bar-lane { height:26px; }
+.vn-app .vn-workspace.vn-results .vn-bar-lane:before {
+ content:'';
+ position:absolute;
+ top:12px;
+ left:0;
+ right:0;
+ height:1px;
+ background:#303030;
+}
+.vn-app .vn-workspace.vn-results .vn-bar-lane:has(.vn-skipped):before { display:none; }
+.vn-app .vn-workspace.vn-results .vn-duration-bar {
+ top:6px;
+ bottom:6px;
+ border-radius:3px;
+ background:#d5d5d5;
+ animation:none;
+}
+.vn-app .vn-workspace.vn-results .vn-duration-bar.vn-bar-failed { background:#171717; border:1px dashed #aaa; }
+.vn-app .vn-workspace.vn-results .vn-chart-row[aria-pressed=true] .vn-duration-bar:not(.vn-bar-failed) { background:#fff; }
+.vn-app .vn-workspace.vn-results .vn-first-marker {
+ top:2px;
+ bottom:2px;
+ width:3px;
+ border:0;
+ border-radius:1px;
+ background:#050505;
+ box-shadow:0 0 0 1px #b5b5b5;
+ transform:translateX(-50%);
+}
+.vn-app .vn-workspace.vn-results .vn-chart-value { font-size:16px; font-weight:600; line-height:1.4; white-space:nowrap; }
+.vn-app .vn-workspace.vn-results .vn-chart-value small { margin-top:4px; font-size:12px; font-weight:400; line-height:1.4; color:#aaa; }
+.vn-app .vn-workspace.vn-results .vn-chart-selection {
+ margin:18px 0 0;
+ padding:14px 16px;
+ min-height:0;
+ border:1px solid #303030;
+ border-radius:6px;
+ background:#141414;
+ font-size:13px;
+ font-weight:400;
+ line-height:1.7;
+ color:#c5c5c5;
+}
+@media(max-width:768px) {
+ .vn-app .vn-workspace.vn-results .vc-plot-legend { gap:8px 16px; font-size:12px; }
+ .vn-app .vn-workspace.vn-results .vn-request-chart { padding:4px 12px 12px; border-radius:8px; }
+ .vn-app .vn-workspace.vn-results :is(.vn-chart-scale,.vn-chart-row) { grid-template-columns:24px minmax(0,1fr) 72px; gap:10px; }
+ .vn-app .vn-workspace.vn-results .vn-chart-row { min-height:70px; padding:14px 0; }
+ .vn-app .vn-workspace.vn-results .vn-chart-scale { font-size:12px; padding:14px 0; }
+ .vn-app .vn-workspace.vn-results .vn-chart-value { font-size:14px; }
+ .vn-app .vn-workspace.vn-results .vn-chart-index { font-size:13px; }
+ .vn-app .vn-workspace.vn-results .vn-chart-selection { margin-top:14px; padding:12px; font-size:12px; }
+}
+@media(prefers-reduced-motion:reduce) {
+ .vn-app .vn-workspace.vn-results .vn-chart-row { transition:none; }
+}

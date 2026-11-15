@@ -204,3 +204,9 @@ The application uses Next.js, React, TypeScript, Zod and the official NEAR JavaS
 ## Assets and licensing
 
 The accelerator is conceptual artwork, not a photograph of the benchmark hardware. Manrope is self-hosted under the included [SIL OFL notice](public/manrope-OFL.txt); asset/runtime attribution is in [ASSET_PROVENANCE.md](ASSET_PROVENANCE.md). Noxicon source code is licensed under the [ISC License](LICENSE), copyright © 2026 Leye-Adebayo John Oluseyi. Third-party assets and dependencies retain their respective licenses.
+
+### Verify the current workspace report
+
+In `/app`, import or run a report, then choose **Upload receipt & verify** under Verification status. Select its matching publication receipt. The read-only `/api/proofs/check` endpoint checks the report commitment, publisher and finalized transaction through the existing verifier. It never signs or publishes. The expected publisher is `NEAR_TESTNET_PUBLISHER`, defaulting to the historical demo account `veyra-proof.testnet`; the uploaded receipt cannot choose the trusted publisher. `NEAR_TESTNET_VERIFY_RPC_URL` may select an existing allowlisted Testnet RPC. No API token or signing key is needed. Checks are same-origin, body-limited and capped at 30 requests per minute per process.
+
+A fresh benchmark still needs separate operator publication before it has a receipt. An unavailable RPC is shown as unavailable, not verified. Publication integrity does not authenticate measurements or establish execution attestation.

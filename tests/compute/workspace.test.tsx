@@ -43,7 +43,7 @@ describe('Compute workspace',()=>{
     await user.upload(screen.getByLabelText('Import benchmark report'),jsonFile(text));
     await screen.findByText('Your benchmark report.');
     await user.click(screen.getByText('Evidence and report fingerprints'));
-    expect(screen.getAllByText('Publication status not checked here.')).toHaveLength(2);
+    expect(screen.getAllByText('Publication status not checked here.')).toHaveLength(1);
     expect(screen.getByText('Completing a benchmark does not automatically publish a NEAR transaction. Export the report to preview its publication commitment. Publication is a separate, explicitly authorized operation.')).toBeTruthy();
     await user.click(screen.getByText('Publish and verify with the operator CLI'));
     expect(screen.getByText('npm run proof -- preview --report REPORT.json')).toBeTruthy();

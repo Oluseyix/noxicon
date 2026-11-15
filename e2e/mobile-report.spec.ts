@@ -1,0 +1,21 @@
+import {test,expect} from '@playwright/test';
+import {readFileSync} from 'node:fs';
+const report=JSON.parse(readFileSync('evidence/groq-report.json','utf8'));
+for(const width of [320,390,600,768])test(`mobile report fits and remains interactive at ${width}px`,async({page},testInfo)=>{
+ await page.setViewportSize({width,height:900});
+ await page.route('**/api/benchmarks/models',r=>r.fulfill({json:{models:[],available:false,message:'Report inspection only.'}}));
+ await page.goto('/app');
+ await expect(page.getByText('Report inspection only.',{exact:true})).toBeVisible();
+ await page.getByLabel('Import benchmark report',{exact:true}).setInputFiles({name:'report.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(report))});
+ await expect(page.locator('.nr-identity')).toContainText('Groq');
+ await expect(page.locator('.vc-metrics strong').first()).toHaveCSS('font-size',width<=360?'28px':'32px');
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+ for(const control of [page.getByRole('button',{name:'Export JSON',exact:true}),page.getByRole('button',{name:'Measured',exact:true})])expect((await control.boundingBox())!.height).toBeGreaterThanOrEqual(44);
+ await page.screenshot({path:testInfo.outputPath(`report-${width}.png`),fullPage:true,animations:'disabled'});
+ const row=page.getByRole('button',{name:'View timing for request 1',exact:true});
+ await row.click();await expect(row).toHaveAttribute('aria-pressed','true');
+ await expect(page.locator('.vn-chart-selection')).toContainText('Request 1:');
+ await page.getByRole('button',{name:'Warm-ups',exact:true}).click();
+ await expect(page.getByText('No warm-up requests were included in this run.')).toBeVisible();
+ const download=page.waitForEvent('download');await page.getByRole('button',{name:'Export JSON',exact:true}).click();expect((await download).suggestedFilename()).toMatch(/\.json$/);
+});

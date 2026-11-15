@@ -1,0 +1,68 @@
+/* Phone and small-tablet report layout. Keep desktop reports unchanged. */
+@media (max-width:768px) {
+ .vn-app:has(.vn-results) .vn-nav { padding:18px 20px; min-height:72px; }
+ .vn-app:has(.vn-results) .vn-brand { font-size:30px; }
+ .vn-app:has(.vn-results) .vn-nav>a:last-child { font-size:14px; min-height:44px; display:flex; align-items:center; }
+ .vn-app .vn-workspace.vn-results:not(.nf-workspace) { width:calc(100% - 40px); padding:16px 0 40px; font-size:15px; font-weight:400; }
+ .vn-app .vn-workspace.vn-results .vn-results-top { display:flex; flex-direction:column; align-items:stretch; gap:8px; margin:0 0 24px; padding:0 0 16px; }
+ .vn-app .vn-results-top>.vn-link { align-self:flex-start; }
+ .vn-app .vn-workspace.vn-results .vn-actions { display:grid; grid-template-columns:1fr 1fr; gap:12px; width:100%; }
+ .vn-app .vn-workspace.vn-results .vn-results-top :is(.vn-link,.vn-button) { font-size:14px; font-weight:500; min-height:44px; line-height:1.4; }
+ .vn-app .vn-workspace.vn-results .vn-actions .vn-link { border:1px solid #454545; border-radius:6px; text-decoration:none; padding:10px 12px; }
+ .vn-app .vn-workspace.vn-results .vn-actions .vn-button { padding:10px 12px; border-radius:6px; }
+ .vn-app .vn-workspace.vn-results>h1 { font-size:28px; line-height:1.2; letter-spacing:-.04em; margin:0 0 24px; }
+ .vn-app .vn-workspace.vn-results .vc-report-meta { display:flex; flex-direction:column; gap:10px; margin:0; }
+ .vn-app .vn-workspace.vn-results .vc-report-meta>div { display:grid; gap:8px; width:100%; }
+ .vn-app .vn-workspace.vn-results .vc-report-meta h2 { font-size:24px; line-height:1.25; font-weight:650; margin:0; }
+ .vn-app .vn-workspace.vn-results .vc-kicker { font-size:11px; font-weight:600; letter-spacing:.12em; }
+ .vn-app .vn-workspace.vn-results .nr-identity { gap:8px 16px; font-size:14px; font-weight:500; line-height:1.5; }
+ .vn-app .vn-workspace.vn-results .vc-report-meta p { font-size:13px; line-height:1.5; font-weight:400; }
+ .vn-app .vn-workspace.vn-results .vc-source-badge { border:0; padding:0; max-width:none; font-size:12px; font-weight:400; line-height:1.5; }
+ .vn-app .vn-workspace.vn-results :is(p,dd,dt,label) { font-size:15px; line-height:1.6; font-weight:400; }
+ .vn-app .vn-workspace.vn-results .vn-success { grid-template-columns:1fr auto; gap:6px 12px; margin:20px 0 0; padding:16px 0; }
+ .vn-app .vn-workspace.vn-results .vn-success>span { font-size:14px; font-weight:500; }
+ .vn-app .vn-workspace.vn-results .vn-success strong { font-size:28px; line-height:1.2; }
+ .vn-app .vn-workspace.vn-results .vn-success>span:last-child { grid-column:1/-1; font-size:13px; font-weight:400; line-height:1.5; }
+ .vn-app .vn-workspace.vn-results .vc-metrics { grid-template-columns:repeat(2,minmax(0,1fr)); gap:20px 0; padding:20px 0; }
+ .vn-app .vn-workspace.vn-results .vc-metrics>div { min-width:0; padding:0 12px!important; }
+ .vn-app .vn-workspace.vn-results .vc-metrics>div:nth-child(odd) { padding-left:0!important; }
+ .vn-app .vn-workspace.vn-results .vc-metrics>div:nth-child(even) { padding-right:0!important; border:0!important; }
+ .vn-app .vn-workspace.vn-results .vc-metrics>div>span { font-size:13px; font-weight:500; line-height:1.4; min-height:36px; }
+ .vn-app .vn-workspace.vn-results .vc-metrics strong { font-size:32px; line-height:1.15; font-weight:600; letter-spacing:-.04em; margin:8px 0; white-space:nowrap; }
+ .vn-app .vn-workspace.vn-results .vc-metrics strong small { font-size:11px; font-weight:400; letter-spacing:0; margin-left:4px; }
+ .vn-app .vn-workspace.vn-results .vc-metrics p { font-size:12px; font-weight:400; line-height:1.5; }
+ .vn-app .vn-workspace.vn-results .vc-outcomes { display:grid; grid-template-columns:1fr 1fr; gap:8px 16px; padding:16px 0; font-size:13px; font-weight:400; line-height:1.5; }
+ .vn-app .vn-workspace.vn-results .vc-outcomes b { color:#f5f5f5; font-weight:600; }
+ .vn-app .vn-workspace.vn-results .vc-outcomes small { display:block; font-size:12px; font-weight:400; }
+ .vn-app .vn-workspace.vn-results details>summary { min-height:56px; padding:14px 0!important; font-size:14px!important; font-weight:500; line-height:1.5; gap:12px; }
+ .vn-app .vn-workspace.vn-results details[open]>summary { margin-bottom:0!important; }
+ .vn-app .vn-workspace.vn-results details[open] { padding-bottom:12px!important; }
+ .vn-app .vn-workspace.vn-results .vc-chart-heading { display:flex; flex-direction:column; align-items:stretch; gap:16px; margin:16px 0 12px; }
+ .vn-app .vn-workspace.vn-results .vc-chart-heading h2 { font-size:22px; }
+ .vn-app .vn-workspace.vn-results .vc-segment { display:grid; grid-template-columns:1fr 1fr; width:100%; }
+ .vn-app .vn-workspace.vn-results .vc-segment button { font-size:14px; min-height:44px; }
+ .vn-app .vn-workspace.vn-results .vc-plot-legend { font-size:12px; font-weight:400; gap:8px 14px; margin:12px 0; }
+ .vn-app .vn-workspace.vn-results .vc-plot-legend small { display:none; }
+ .vn-app .vn-workspace.vn-results .vn-chart-scale,.vn-app .vn-workspace.vn-results .vn-chart-row { grid-template-columns:24px minmax(0,1fr) 70px; gap:10px; }
+ .vn-app .vn-workspace.vn-results .vn-chart-scale { font-size:12px; font-weight:400; padding:10px 0; }
+ .vn-app .vn-workspace.vn-results .vn-chart-scale>span:first-child,.vn-app .vn-workspace.vn-results .vn-chart-scale>span:nth-child(2) { font-size:0; }
+ .vn-app .vn-workspace.vn-results .vn-chart-scale>span:first-child:after { content:'#'; font-size:12px; }
+ .vn-app .vn-workspace.vn-results .vn-chart-scale>span:nth-child(2):after { content:'Duration'; font-size:12px; }
+ .vn-app .vn-workspace.vn-results .vn-chart-row { min-height:62px; }
+ .vn-app .vn-workspace.vn-results .vn-chart-index { font-size:13px; font-weight:500; }
+ .vn-app .vn-workspace.vn-results .vn-chart-value { font-size:14px; font-weight:500; white-space:nowrap; }
+ .vn-app .vn-workspace.vn-results .vn-chart-value small { font-size:12px; font-weight:400; }
+ .vn-app .vn-workspace.vn-results .vn-chart-selection { font-size:13px; font-weight:400; line-height:1.6; margin:12px 0 20px; min-height:0; }
+ .vn-app .vn-workspace.vn-results .vn-verification-status { grid-template-columns:1fr; gap:16px; padding:24px 0; }
+ .vn-app .vn-workspace.vn-results .vn-verification-status h2 { font-size:22px; }
+ .vn-app .vn-workspace.vn-results .vn-verification-status p,.vn-app .vn-workspace.vn-results .vn-verification-status strong { font-size:14px; font-weight:400; line-height:1.5; }
+ .vn-app .vn-workspace.vn-results .vn-verification-status strong { margin-top:4px; color:#f5f5f5; }
+ .vn-app .vn-workspace.vn-results :is(.vc-config-summary,.nr-methodology) { grid-template-columns:1fr; }
+ .vn-app .vn-workspace.vn-results :is(.vc-import-boundary,.vn-example-note) { font-size:13px; line-height:1.6; }
+ .vn-app:has(.vn-results) .vn-footer { padding:24px 20px; }
+}
+@media (max-width:360px) {
+ .vn-app .vn-workspace.vn-results:not(.nf-workspace) { width:calc(100% - 32px); }
+ .vn-app .vn-workspace.vn-results .vc-metrics strong { font-size:28px; }
+ .vn-app .vn-workspace.vn-results .vc-metrics>div { padding-inline:10px!important; }
+}

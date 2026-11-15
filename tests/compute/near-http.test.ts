@@ -27,7 +27,7 @@ describe('NEAR OpenAI-compatible HTTP adapter — entirely mocked',()=>{
   const events=[];for await(const e of await session.transport.open(requestBody(config,0),signal()))events.push(e);
   expect(events).toHaveLength(3);expect(session.transport.verify).toBeUndefined();
   expect(p.request.mock.calls.map(c=>c[0])).toEqual(['https://cloud-api.near.ai/v1/models','https://cloud-api.near.ai/v1/chat/completions']);
-  expect(p.request.mock.calls[0][1]).toMatchObject({headers:{Authorization:`Bearer ${key}`},cache:'no-store',redirect:'error'});
+  expect(p.request.mock.calls[0][1]).toMatchObject({headers:{Authorization:`Bearer ${key}`},cache:'no-store',redirect:'manual'});
   expect(JSON.parse(p.request.mock.calls[1][1]!.body as string)).toEqual(requestBody(config,0));session.close();
  });
  it('refreshes discovery without reusing another credential’s catalog',async()=>{let secret=key;const request=vi.fn<typeof fetch>().mockImplementation(async()=>Response.json({data:[entry]}));const p=createNearCloudAdapter({request,credential:()=>secret});await p.discoverModels();secret='rotated-server-secret';await p.discoverModels();expect(request.mock.calls[1][1]?.headers).toEqual({Authorization:'Bearer rotated-server-secret'});});

@@ -18,7 +18,7 @@ it.each(['failed','successful'])('handles manual retry through loading to a %s o
  vi.stubGlobal('crypto',webcrypto);
  const failed=failure(96),next=failure(512);
  if(ending==='successful'){
-  const success=uiFixture().requests[0];next.status='completed';next.requests=next.requests.map(r=>({...success,index:r.index,promptIndex:r.promptIndex,phase:r.phase}));next.statistics=statistics(next.requests);next.verification=verificationSummary(next.requests);
+  const success={...uiFixture().requests[0],verification:next.requests[0].verification};next.status='completed';next.requests=next.requests.map(r=>({...success,index:r.index,promptIndex:r.promptIndex,phase:r.phase}));next.statistics=statistics(next.requests);next.verification=verificationSummary(next.requests);
  }
  const reply=(report:BenchmarkReport)=>new Response(JSON.stringify({type:'report',report,warning:report.status==='provider_error'?'Finish reason: length. Provider completion tokens: 96; reasoning tokens: 94.':undefined})+'\n',{headers:{'Content-Type':'application/x-ndjson'}});
  const bodies:unknown[]=[];let finishRetry!:(value:Response)=>void;

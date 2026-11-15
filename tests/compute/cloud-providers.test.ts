@@ -42,13 +42,29 @@ describe.each(providers)('$name shared cloud contract — HTTP fixtures, no real
   expect(JSON.stringify(report)).not.toMatch(/mock-only-cloud-secret|private answer/);
   expect(session.transport.verify).toBeUndefined();expect(()=>constructBenchmarkReceipt(report)).toThrow('not enabled');
   expect(p.request.mock.calls.map(c=>c[0])).toEqual([`${provider.base}models`,`${provider.base}chat/completions`]);
-  for(const [,init] of p.request.mock.calls)expect(init).toMatchObject({headers:{Authorization:`Bearer ${key}`},redirect:'error',cache:'no-store'});
+  for(const [,init] of p.request.mock.calls)expect(init).toMatchObject({headers:{Authorization:`Bearer ${key}`},redirect:'manual',cache:'no-store'});
   const body=JSON.parse(p.request.mock.calls[1][1]!.body as string);
   const original=requestBody(config,0);
   if(provider.id==='groq'){
    const {max_tokens,...rest}=original;expect(body).toEqual({...rest,max_completion_tokens:max_tokens,service_tier:'on_demand'});
   }else expect(body).toEqual(original);
   session.close();
+ });
+ it.each([301,302,303,307,308])('rejects HTTP %s on discovery and completion without following redirects',async status=>{
+  for(const operation of ['models','completion']){
+   const cancel=vi.fn();
+   const redirect=new Response(new ReadableStream({cancel}),{status,headers:{Location:'https://untrusted.example/collect'}});
+   const p=adapter(operation==='models'?[redirect]:[Response.json({data:[provider.entry]}),redirect]);
+   if(operation==='models')await expect(p.discoverModels(signal())).rejects.toMatchObject({code:'network_error',provider:provider.id});
+   else{
+    const session=await p.prepareTransport(config,signal());
+    try{await expect(session.transport.open(requestBody(config,0),signal())).rejects.toMatchObject({code:'network_error',provider:provider.id});}
+    finally{session.close();}
+   }
+   expect(cancel).toHaveBeenCalledOnce();
+   expect(p.request).toHaveBeenCalledTimes(operation==='models'?1:2);
+   for(const [url,init] of p.request.mock.calls){expect(String(url).startsWith(provider.base)).toBe(true);expect(init?.redirect).toBe('manual');}
+  }
  });
  it('does not invent tokens when usage is absent',async()=>{
   const p=adapter([Response.json({data:[provider.entry]}),success(config.model,false)]);

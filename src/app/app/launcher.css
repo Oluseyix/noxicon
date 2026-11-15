@@ -69,3 +69,6 @@
   .vl-reports { padding-top: 26px; }
 }
 @media(prefers-reduced-motion:reduce) { .vl-refresh[aria-busy=true] svg { animation: none; } }
+
+/* The output budget remains in settings, outside the primary model selection. */
+.vn-app .vl-model>.vl-budget { display:none; }

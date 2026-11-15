@@ -1,0 +1,57 @@
+/* Separate the report introduction, identity and measurements into clear groups. */
+.vn-app .vn-workspace.vn-results>h1 { margin-bottom:36px; }
+.vn-app .vn-workspace.vn-results .vn-example-note {
+ margin:0 0 40px;
+ padding:4px 0 4px 24px;
+ max-width:68ch;
+ line-height:1.85;
+}
+.vn-app .vn-workspace.vn-results .vn-example-note strong {
+ display:block;
+ margin-bottom:12px;
+ line-height:1.5;
+}
+.vn-app .vn-workspace.vn-results .vc-report-meta { margin:0; gap:24px; }
+.vn-app .vn-workspace.vn-results .vc-report-meta>div { gap:20px; }
+.vn-app .vn-workspace.vn-results .vc-report-meta h2 { line-height:1.35; }
+.vn-app .vn-workspace.vn-results .nr-identity { gap:12px 28px; line-height:1.7; }
+.vn-app .vn-workspace.vn-results .vc-report-meta p { margin:0; line-height:1.7; }
+.vn-app .vn-workspace.vn-results .vc-import-boundary {
+ max-width:68ch;
+ margin:32px 0 36px;
+ line-height:1.85;
+}
+.vn-app .vn-workspace.vn-results .vn-success { margin-top:32px; padding:28px 0; gap:16px 24px; }
+.vn-app .vn-workspace.vn-results .vn-success>span:last-child { line-height:1.8; max-width:68ch; }
+.vn-app .vn-workspace.vn-results .vc-metrics { padding-block:32px; }
+@media(max-width:768px) {
+ .vn-app .vn-workspace.vn-results>h1 { margin-bottom:32px; }
+ .vn-app .vn-workspace.vn-results .vn-example-note { padding-left:18px; margin-bottom:36px; }
+ .vn-app .vn-workspace.vn-results .vc-report-meta { gap:24px; }
+ .vn-app .vn-workspace.vn-results .vc-report-meta>div { gap:18px; }
+ .vn-app .vn-workspace.vn-results .nr-identity { gap:12px 24px; }
+ .vn-app .vn-workspace.vn-results .vc-import-boundary { margin:32px 0; }
+ .vn-app .vn-workspace.vn-results .vn-success { padding:24px 0; gap:16px; }
+ .vn-app .vn-workspace.vn-results .vc-metrics { padding-block:28px; row-gap:28px; }
+}
+
+/* Keep report actions after the content rather than above the heading. */
+.vn-app .vn-workspace.vn-results { display:flex; flex-direction:column; }
+.vn-app .vn-workspace.vn-results .vn-results-top { order:10; margin:36px 0 0; padding:24px 0 0; border-bottom:0; border-top:1px solid #303030; }
+
+/* Keep the next section's divider clear of wrapped outcome labels. */
+.vn-app .vn-workspace.vn-results .vc-outcomes {
+ display:grid;
+ grid-template-columns:repeat(4,minmax(0,1fr));
+ padding:24px 0 32px;
+ gap:20px 24px;
+ margin:0;
+ line-height:1.7;
+ align-items:start;
+}
+.vn-app .vn-workspace.vn-results .vc-outcomes>span { min-width:0; line-height:1.7; font-size:15px; font-weight:400; }
+.vn-app .vn-workspace.vn-results .vc-outcomes b { color:#f5f5f5; font-weight:600; }
+.vn-app .vn-workspace.vn-results .vc-outcomes small { display:block; font-size:13px; font-weight:400; line-height:1.6; margin-top:4px; }
+@media(max-width:768px) {
+ .vn-app .vn-workspace.vn-results .vc-outcomes { grid-template-columns:repeat(2,minmax(0,1fr)); gap:16px 20px; }
+}

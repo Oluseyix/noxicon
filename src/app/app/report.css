@@ -57,6 +57,8 @@
 .vn-app .vn-results details>summary:after { font-size:20px; width:24px; height:24px; }
 .vn-app .vn-results details[open]>summary { margin:0 0 16px!important; border:0; }
 .vn-app .vn-results details[open] { padding-bottom:20px!important; }
+/* Keep receipt dividers clear of the preceding paragraph in either state. */
+.vn-app .vn-results .vc-evidence-ledger .vc-commitment-detail { margin-top:24px!important; }
 .vn-app .vn-results .vc-table-wrap { max-width:100%; margin:12px 0 20px; }
 .vn-app .vn-results .vc-table-wrap th,.vn-app .vn-results .vc-table-wrap td { font-size:14px; padding:12px; font-variant-numeric:tabular-nums; }
 .vn-app .vn-results .vc-table-wrap button { min-height:44px; min-width:44px; }
@@ -69,11 +71,18 @@
 .vn-app .vn-results .vc-config-summary dd,.vn-app .vn-results .nr-methodology dd { margin:0; text-align:left; font-variant-numeric:tabular-nums; }
 .vn-app .vn-results .vc-detail ol { padding-left:22px; max-width:85ch; }
 .vn-app .vn-results .vc-detail li { padding:6px 0; }
+.vn-app .vn-results .nr-prompts { margin:24px 0; max-width:80ch; }
+.vn-app .vn-results .nr-prompts h3 { margin:0 0 10px; font-size:14px; font-weight:600; line-height:1.5; letter-spacing:0; color:var(--nr-muted); }
+.vn-app .vn-results .nr-system-instruction { padding:16px 20px; border-left:2px solid var(--nr-line); background:#101010; margin-bottom:24px; }
+.vn-app .vn-results .nr-system-instruction p { margin:0; font-size:15px; line-height:1.7; font-weight:400; }
+.vn-app .vn-results .nr-prompts ol { list-style:decimal; margin:0; padding-left:28px; }
+.vn-app .vn-results .nr-prompts li { padding:10px 0 10px 8px; font-size:15px; line-height:1.7; font-weight:400; overflow-wrap:anywhere; }
+.vn-app .vn-results .nr-prompts li::marker { color:var(--nr-muted); font-variant-numeric:tabular-nums; }
 .vn-app .vn-results .vn-verification-status { background:transparent; border:0; border-top:1px solid var(--nr-line); border-radius:0; padding:24px 0; margin:0; gap:12px 32px; }
 .vn-app .vn-results .vn-verification-status h2 { font-size:24px; margin-bottom:0; }
 .vn-app .vn-results .vn-verification-status p,.vn-app .vn-results .vn-verification-status strong { font-size:14px; line-height:1.65; }
 .vn-app .vn-results .vc-evidence-section { padding:0; }
-.vn-app .vn-results .vc-evidence-intro h2 { font-size:24px; }
+.vn-app .vn-results .vc-evidence-ledger { margin-top:0; }
 .vn-app .vn-results .vc-evidence-intro p,.vn-app .vn-results .vc-evidence-ledger article p,.vn-app .vn-results .vc-commitment-detail p,.vn-app .vn-results .vc-commitment-detail li { font-size:15px; line-height:1.65; max-width:85ch; overflow-wrap:anywhere; }
 .vn-app .vn-results .vc-ledger-title { flex-wrap:wrap; gap:8px 20px; }
 .vn-app .vn-results .vc-ledger-title h3 { font-size:20px; }
@@ -193,3 +202,7 @@
 @keyframes nf-enter{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
 @media(max-width:560px){.vn-app .vn-workspace.nf-workspace{width:calc(100% - 32px);padding-top:16px}.vn-app .nf-failure{padding:18px}.vn-app .nf-failure .nf-status h2{font-size:21px}.vn-app .nf-status{gap:10px}.vn-app .nf-steps{gap:4px;margin:22px 0}.vn-app .nf-steps strong{font-size:11px}.vn-app .nf-steps small{font-size:10px}.vn-app .nf-actions{display:grid;grid-template-columns:1fr;width:100%;gap:8px}.vn-app .nf-details dl{grid-template-columns:1fr}.vn-app .nf-workspace .vn-results-top{flex-direction:row;flex-wrap:wrap;gap:0}.vn-app .nf-workspace .vn-results .vn-actions{width:auto}.vn-app .nf-context{margin-bottom:16px}}
 @media(prefers-reduced-motion:reduce){.vn-app .nf-failure{animation:none}.vn-app .nf-failure button{transition:none}}
+
+.vn-app .vn-results .nr-receipt-check { margin-top:20px; padding-top:20px; border-top:1px solid var(--nr-line); max-width:80ch; }
+.vn-app .vn-results .nr-receipt-check p { font-size:14px; line-height:1.7; margin:0 0 12px; overflow-wrap:anywhere; }
+.vn-app .vn-results .nr-receipt-check .vn-button { margin:4px 0 16px; }

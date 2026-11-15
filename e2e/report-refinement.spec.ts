@@ -5,6 +5,7 @@ for(const width of [375,768,1280,1440])test(`report identity, keyboard timeline 
  await page.setViewportSize({width,height:1000});
  await page.route('**/api/benchmarks/models',route=>route.fulfill({json:{models:[],available:false,message:'Report inspection only.'}}));
  await page.goto('/app');
+ await expect(page.getByText('Report inspection only.',{exact:true})).toBeVisible();
  // A test-only copy exercises wrapping; the historical fixture is never written.
  const report=structuredClone(historical);report.config.model='test-only/'+('long-model-identifier-'.repeat(8));
  await page.getByLabel('Import benchmark report',{exact:true}).setInputFiles({name:'test-report.json',mimeType:'application/json',buffer:Buffer.from(JSON.stringify(report))});

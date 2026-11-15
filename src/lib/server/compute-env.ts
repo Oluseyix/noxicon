@@ -13,7 +13,7 @@ export function supportedRuntime(version=process.versions.node){
  return major>24||(major===24&&(minor>22||(minor===22&&patch>=1)));
 }
 export function selectedProvider():CloudProviderId{
- const parsed=cloudProviderSchema.safeParse(process.env.VEYRA_COMPUTE_PROVIDER??'near-ai-cloud');
+ const parsed=cloudProviderSchema.safeParse(process.env.VEYRA_COMPUTE_PROVIDER??(process.env.GROQ_API_KEY?.trim()&&!process.env.NEAR_AI_API_KEY?.trim()?'groq':'near-ai-cloud'));
  if(!parsed.success)throw new BoundaryError(503,'Set VEYRA_COMPUTE_PROVIDER to near-ai-cloud or groq. No inference requests were sent.');
  return parsed.data;
 }
